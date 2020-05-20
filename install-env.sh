@@ -1,5 +1,8 @@
 #!/bin/bash
 
+pass_mana=$(openssl rand -base64 32)
+pass_admin=$(openssl rand -base64 32)
+pass_script=$(openssl rand -base64 32)
 sudo apt-get update
 sudo apt-get install -y default-jdk git
 wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
@@ -279,9 +282,9 @@ sudo echo '<?xml version="1.0" encoding="UTF-8"?>
   <role rolename="manager-script"/>
   <role rolename="manager-jmx"/>
   <role rolename="manager-status"/>
-  <user username="admin" password="admin" roles="manager-gui, manager-script, manager-jmx, manager-status"/>
-  <user username="deployer" password="deployer" roles="manager-script"/>
-  <user username="tomcat" password="s3cret" roles="manager-gui"/>
+  <user username="admin" password="'$pass_admin'" roles="manager-gui, manager-script, manager-jmx, manager-status"/>
+  <user username="deployer" password="'$pass_script'" roles="manager-script"/>
+  <user username="tomcat" password="'$pass_mana'" roles="manager-gui"/>
 </tomcat-users>' > /home/ubuntu/apache-tomcat-8.5.55/conf/tomcat-users.xml
 sudo su -
 tomcatdown
